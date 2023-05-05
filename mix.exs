@@ -12,8 +12,8 @@ defmodule UeberauthEveSso.MixProject do
       elixir: "~> 1.9",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env() == :prod,
-      source_url: "https://github.com/lukasni/ueberauth_eve_sso",
-      homepage_url: "https://github.com/lukasni/ueberauth_eve_sso",
+      source_url: "https://github.com/OrangeDrangon/ueberauth_eve_sso",
+      homepage_url: "https://github.com/OrangeDrangon/ueberauth_eve_sso",
       description: description(),
       deps: deps(),
       docs: docs()
@@ -31,7 +31,7 @@ defmodule UeberauthEveSso.MixProject do
   defp deps do
     [
       {:oauth2, "~> 2.0"},
-      {:ueberauth, "~> 0.6"},
+      {:ueberauth, "~> 0.10.5"},
 
       # dev/test only dependencies
       {:credo, "~> 0.8", only: [:dev, :test]},

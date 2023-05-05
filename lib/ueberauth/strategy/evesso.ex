@@ -64,7 +64,8 @@ defmodule Ueberauth.Strategy.EVESSO do
   use Ueberauth.Strategy,
     uid_field: :owner_hash,
     default_scope: "",
-    oauth2_module: Ueberauth.Strategy.EVESSO.OAuth
+    oauth2_module: Ueberauth.Strategy.EVESSO.OAuth,
+    ignores_csrf_attack: false
 
   alias Ueberauth.Auth.{Info, Credentials, Extra}
 
@@ -81,18 +82,18 @@ defmodule Ueberauth.Strategy.EVESSO do
     scopes = conn.params["scope"] || option(conn, :default_scope)
     send_redirect_uri = Keyword.get(options(conn), :send_redirect_uri, true)
 
-    opts =
-      if send_redirect_uri do
+    params = if send_redirect_uri do
         [redirect_uri: callback_url(conn), scope: scopes]
-      else
+    else
         [scope: scopes]
-      end
+    end
 
-    opts =
-      if conn.params["state"], do: Keyword.put(opts, :state, conn.params["state"]), else: opts
+    params = params
+    |> with_state_param(conn)
+
 
     module = option(conn, :oauth2_module)
-    redirect!(conn, apply(module, :authorize_url!, [opts]))
+    redirect!(conn, apply(module, :authorize_url!, [params]))
   end
 
   @doc """
